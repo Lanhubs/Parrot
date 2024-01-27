@@ -31,19 +31,19 @@ export default function DetailsModal({ children, isOpen, setIsOpen }) {
   const [news, setNews] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const fetchContent = () => {
-      setLoading(true);
-      axios
-        .get(`https://parrotnews.ng/?url=${params.url}`)
-        .then((res) => {
-          setLoading(false);
-          console.log(data);
-          setNews(res.data);
-        })
-        .catch((e) => {
-          setLoading(false);
-          // setNews(JSON.stringify(e));
-          console.log(e);
-        });
+    setLoading(true);
+    axios
+      .get(`https://parrotnews.ng/?url=${params.url}`)
+      .then((res) => {
+        setLoading(false);
+        console.log(data);
+        setNews(res.data);
+      })
+      .catch((e) => {
+        setLoading(false);
+        // setNews(JSON.stringify(e));
+        console.log(e);
+      });
   };
   React.useEffect(() => {
     fetchContent();
@@ -60,19 +60,20 @@ export default function DetailsModal({ children, isOpen, setIsOpen }) {
   return (
     <>
       <Modal animationType="fade" visible={isOpen} transparent={true}>
-        <View style={{ flex: 1, backgroundColor: "#fff" }}>
-          {loading ? (
-            <NewsLoader />
-          ) : (
-            <ScrollView>
-              <>
-                <Pressable
-                  onPress={() => setIsOpen(false)}
-                  style={newsStyle.backBtn}
-                >
-                  <Ionicons name="arrow-back" size={25} color={"#fff"} />
-                </Pressable>
-                {/* {params.image? (
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#FAFAFA" }}>
+          <View style={{flex: 1}}>
+            {loading ? (
+              <NewsLoader />
+            ) : (
+              <ScrollView>
+                <>
+                  <Pressable
+                    onPress={() => setIsOpen(false)}
+                    style={newsStyle.backBtn}
+                  >
+                    <Ionicons name="arrow-back" size={25} color={"#fff"} />
+                  </Pressable>
+                  {/* {params.image? (
                      <ImageBackground
                      source={{
                        uri: params.image,
@@ -149,20 +150,21 @@ export default function DetailsModal({ children, isOpen, setIsOpen }) {
                       </View>
                     </View>
                 )} */}
-               
-                <View style={newsStyle.newsContentContainer}>
-                  <Text style={newsStyle.newsContent}>{news}</Text>
-                  <Logo
-                    style={{
-                      width: SCREEN_WIDTH / 1.5,
-                      height: SCREEN_HEIGHT / 30,
-                    }}
-                  />
-                </View>
-              </>
-            </ScrollView>
-          )}
-        </View>
+
+                  <View style={newsStyle.newsContentContainer}>
+                    <Text style={newsStyle.newsContent}>{news}</Text>
+                    <Logo
+                      style={{
+                        width: SCREEN_WIDTH / 1.5,
+                        height: SCREEN_HEIGHT / 30,
+                      }}
+                    />
+                  </View>
+                </>
+              </ScrollView>
+            )}
+          </View>
+        </SafeAreaView>
       </Modal>
     </>
   );
