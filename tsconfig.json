@@ -13,5 +13,5 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
-  ]
+, "components/UiKits/NewsTypeScroll.js", "components/UiKits/Logo.jsx", "components/UiKits/NewsHeadlineCard.jsx", "app/(tabs)/me.jsx", "app/(tabs)/settings.jsx", "app/(tabs)/index.jsx", "components/constants/style.js", "app/forgotPassword.jsx", "app/_layout.jsx", "app/news/details.jsx"  ]
 }
