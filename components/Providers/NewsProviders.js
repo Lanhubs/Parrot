@@ -9,6 +9,7 @@ const NewsContext = React.createContext({
     time: "",
     category: "",
     image: null,
+    
   },
 });
 export default ({ children }) => {
@@ -21,6 +22,7 @@ export default ({ children }) => {
     category: "",
     headline: "",
     time: "",
+    
   });
   return (
     <NewsContext.Provider

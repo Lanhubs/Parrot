@@ -18,10 +18,7 @@
       "supportsTablet": true
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
+
       "package": "com.parrot.parrot"
     },
     "web": {
@@ -43,7 +40,6 @@
     }
   },
   "react-native-google-mobile-ads": {
-    "android_app_id": "ca-app-pub-2672084441882438~6692670311",
-    "_android_app_id":"ca-app-pub-2672084441882438~6692670311"
+    "android_app_id":"ca-app-pub-2672084441882438~6692670311"
   }
 }

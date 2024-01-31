@@ -13,16 +13,17 @@ import {
 } from "../constants/Ui_contants";
 import { Link, router } from "expo-router";
 import dummy from "../../assets/images/dummy.jpeg";
-const FirstNewsHeadline = ({ image, headline, timePosted, link, category, newsHandler }) => {
+const FirstNewsHeadline = ({
+  image,
+  headline,
+  timePosted,
+  link,
+  category,
+  newsHandler,
+}) => {
   return (
     <Pressable
-      onPress={
-        /* () =>
-        router.replace(
-          `/details?url=${link}&category=${category}&image=${image}&headline=${headline}&time=${timePosted}`
-        ) */
-        newsHandler
-      }
+      onPress={newsHandler}
       style={{
         // width: SCREEN_WIDTH / 1,
         overflow: "hidden",

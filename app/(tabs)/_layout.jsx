@@ -16,9 +16,7 @@ import {
 } from "@/components/constants/Ui_contants";
 import { Pressable, Text,  View } from "react-native";
 import Logo from "@/components/UiKits/Logo";
-import { NewsState } from "@/components/Providers/NewsProviders";
 export default function TabLayout() {
-const {showBottomBar} = NewsState()
   return (
     <Tabs
       screenOptions={{

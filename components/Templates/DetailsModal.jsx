@@ -25,23 +25,25 @@ import Logo from "../UiKits/Logo";
 import { NewsState } from "../Providers/NewsProviders";
 import { newsStyle } from "../constants/style";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export default function DetailsModal({ children, isOpen, setIsOpen }) {
-  const { params } = NewsState();
-  const [news, setNews] = React.useState("");
+export default function DetailsModal({ children, isOpen, setIsOpen, params }) {
+//   const { params, setParams } = NewsState();
+  const [news, setNews] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
-  const fetchContent = () => {
+  const fetchContent =async  () => {
+    const url = await AsyncStorage.getItem("Parrot-news-details")
+    // setParams(JSON.parse(newsDetails))
     setLoading(true);
     axios
-      .get(`https://parrotnews.ng/?url=${params.url}`)
+      .get(`https://parrotnews.ng/?url=${url}`)
       .then((res) => {
-        setLoading(false);
-        console.log(data);
         setNews(res.data);
+        setLoading(false);
       })
       .catch((e) => {
         setLoading(false);
-        // setNews(JSON.stringify(e));
+        setNews(e);
         console.log(e);
       });
   };
@@ -61,7 +63,7 @@ export default function DetailsModal({ children, isOpen, setIsOpen }) {
     <>
       <Modal animationType="fade" visible={isOpen} transparent={true}>
         <SafeAreaView style={{ flex: 1, backgroundColor: "#FAFAFA" }}>
-          <View style={{flex: 1}}>
+          <View style={{ flex: 1 }}>
             {loading ? (
               <NewsLoader />
             ) : (
@@ -73,52 +75,57 @@ export default function DetailsModal({ children, isOpen, setIsOpen }) {
                   >
                     <Ionicons name="arrow-back" size={25} color={"#fff"} />
                   </Pressable>
-                  {/* {params.image? (
-                     <ImageBackground
-                     source={{
-                       uri: params.image,
-                     }}
-                     // source={dummy}
-                     style={[
-                       StyleSheet.absoluteFill,
-                       { width: SCREEN_WIDTH / 1, height: SCREEN_HEIGHT / 2.3 },
-                     ]}
-                     resizeMode="cover"
-                   >
-                     <View
-                       style={{
-                         width: SCREEN_WIDTH,
-                         height: SCREEN_HEIGHT / 2.3,
-                         backgroundColor: "rgba(0,0,0,0.25)",
-                         justifyContent: "flex-end",
-                         paddingHorizontal: SCREEN_WIDTH / 20,
-                       }}
-                     >
-                       <View style={{ marginBottom: SCREEN_HEIGHT / 70 }}>
-                         <View
-                           style={[
-                             newsStyle.category,
-                             {
-                               width:
-                                 params?.category.length >= 10
-                                   ? SCREEN_WIDTH / 1.5
-                                   : SCREEN_WIDTH / 2.5,
-                             },
-                           ]}
-                         >
-                           <Text style={newsStyle.categoryText}>
-                             {params?.category}
-                           </Text>
-                         </View>
-                         <Text style={newsStyle.newsHeader}>
-                           {params?.headline}{" "}
-                         </Text>
-                         <Text style={newsStyle.timePosted}>{params?.time} </Text>
-                       </View>
-                     </View>
-                   </ImageBackground>
-                ):(
+                  {params.image ? (
+                    <ImageBackground
+                      source={{
+                        uri: params.image,
+                      }}
+                      // source={dummy}
+                      style={[
+                        StyleSheet.absoluteFill,
+                        {
+                          width: SCREEN_WIDTH / 1,
+                          height: SCREEN_HEIGHT / 2.3,
+                        },
+                      ]}
+                      resizeMode="cover"
+                    >
                       <View
+                        style={{
+                          width: SCREEN_WIDTH,
+                          height: SCREEN_HEIGHT / 2.3,
+                          backgroundColor: "rgba(0,0,0,0.25)",
+                          justifyContent: "flex-end",
+                          paddingHorizontal: SCREEN_WIDTH / 20,
+                        }}
+                      >
+                        <View style={{ marginBottom: SCREEN_HEIGHT / 70 }}>
+                          <View
+                            style={[
+                              newsStyle.category,
+                              {
+                                width:
+                                  params?.category.length >= 10
+                                    ? SCREEN_WIDTH / 1.5
+                                    : SCREEN_WIDTH / 2.5,
+                              },
+                            ]}
+                          >
+                            <Text style={newsStyle.categoryText}>
+                              {params?.category}
+                            </Text>
+                          </View>
+                          <Text style={newsStyle.newsHeader}>
+                            {params?.headline}{" "}
+                          </Text>
+                          <Text style={newsStyle.timePosted}>
+                            {params?.time}{" "}
+                          </Text>
+                        </View>
+                      </View>
+                    </ImageBackground>
+                  ) : (
+                    <View
                       style={{
                         width: SCREEN_WIDTH,
                         height: SCREEN_HEIGHT / 2.3,
@@ -146,13 +153,15 @@ export default function DetailsModal({ children, isOpen, setIsOpen }) {
                         <Text style={newsStyle.newsHeader}>
                           {params?.headline}{" "}
                         </Text>
-                        <Text style={newsStyle.timePosted}>{params?.time} </Text>
+                        <Text style={newsStyle.timePosted}>
+                          {params?.time}{" "}
+                        </Text>
                       </View>
                     </View>
-                )} */}
+                  )}
 
                   <View style={newsStyle.newsContentContainer}>
-                    <Text style={newsStyle.newsContent}>{news}</Text>
+                    {params.content && <Text style={newsStyle.newsContent}>{params.content}</Text>}
                     <Logo
                       style={{
                         width: SCREEN_WIDTH / 1.5,

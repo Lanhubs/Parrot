@@ -21,87 +21,142 @@ import {
   SCREEN_HEIGHT,
   SCREEN_WIDTH,
 } from "../components/constants/Ui_contants";
-import dummy from "../assets/images/dummy.jpeg";
 import Logo from "../components/UiKits/Logo";
-const Page = () => {
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+export default function Page() {
   const params = useLocalSearchParams();
-  const [news, setNews] = React.useState(null);
+  const [news, setNews] = React.useState("");
   const [loading, setLoading] = React.useState(false);
-  const fetchContent = () => {
+  const fetchContent = async () => {
+    // const params = await AsyncStorage.getItem("Parrot-news-details");
     setLoading(true);
-    fetch(`https://parrotnews.ng/?url=${params.url}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setLoading(false);
-        setNews(data);
+    const res = await fetch(`https://parrotnews.ng`, {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        uri: params?.read
       })
-      .catch((e) => {
-        setLoading(false);
-        // setNews(JSON.stringify(e));
-        console.log(e);
-      });
+    });
+    const data = await res.json();
+    setLoading(false);
+    setNews(data);
+    // setNews(JSON.stringify(e));
   };
   React.useEffect(() => {
     fetchContent();
+    console.log(params);
   }, []);
   return (
     <>
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
-        {loading ? (
-          <NewsLoader />
-        ) : (
-          <ScrollView>
-            <>
-              <Pressable
-                onPress={() => router.replace("/(tabs)/index")}
-                style={newsStyle.backBtn}
-              >
-                <Ionicons name="arrow-back" size={25} color={"#fff"} />
-              </Pressable>
-              <ImageBackground
-                source={{
-                  uri: params?.image,
-                }}
-                // source={dummy}
-                style={[
-                  StyleSheet.absoluteFill,
-                  { width: SCREEN_WIDTH, height: SCREEN_HEIGHT / 2.3 },
-                ]}
-                resizeMode="cover"
-              >
-                <View
-                  style={{
-                    width: SCREEN_WIDTH,
-                    height: SCREEN_HEIGHT / 2.3,
-                    backgroundColor: "rgba(0,0,0,0.25)",
-                    justifyContent: "flex-end",
-                    paddingHorizontal: SCREEN_WIDTH / 20,
-                  }}
+      <SafeAreaView style={{ flex: 1, backgroundColor: "#FAFAFA" }}>
+        <View style={{ flex: 1 }}>
+          {loading ? (
+            <NewsLoader />
+          ) : (
+            <ScrollView>
+              <>
+                <Pressable
+                  onPress={() => router.canGoBack(true)}
+                  style={newsStyle.backBtn}
                 >
-                  <View style={{ marginBottom: SCREEN_HEIGHT / 70 }}>
-                    <View style={newsStyle.category}>
-                      <Text style={newsStyle.categoryText}>{params?.category}</Text>
+                  <Ionicons name="arrow-back" size={25} color={"#fff"} />
+                </Pressable>
+                {params.image ? (
+                  <ImageBackground
+                    source={{
+                      uri: params.image,
+                    }}
+                    // source={dummy}
+                    style={[
+                      StyleSheet.absoluteFill,
+                      {
+                        width: SCREEN_WIDTH / 1,
+                        height: SCREEN_HEIGHT / 2.3,
+                      },
+                    ]}
+                    resizeMode="cover"
+                  >
+                    <View
+                      style={{
+                        width: SCREEN_WIDTH,
+                        height: SCREEN_HEIGHT / 2.3,
+                        backgroundColor: "rgba(0,0,0,0.25)",
+                        justifyContent: "flex-end",
+                        paddingHorizontal: SCREEN_WIDTH / 20,
+                      }}
+                    >
+                      <View style={{ marginBottom: SCREEN_HEIGHT / 70 }}>
+                        <View
+                          style={[
+                            newsStyle.category,
+                            {
+                              width:
+                                params?.category.length >= 10
+                                  ? SCREEN_WIDTH / 1.5
+                                  : SCREEN_WIDTH / 2.5,
+                            },
+                          ]}
+                        >
+                          <Text style={newsStyle.categoryText}>
+                            {params?.category}
+                          </Text>
+                        </View>
+                        <Text style={newsStyle.newsHeader}>
+                          {params?.title}
+                        </Text>
+                        <Text style={newsStyle.timePosted}>{news?.time}</Text>
+                      </View>
                     </View>
-                    <Text style={newsStyle.newsHeader}>{params?.headline} </Text>
-                    <Text style={newsStyle.timePosted}>{params?.time} </Text>
+                  </ImageBackground>
+                ) : (
+                  <View
+                    style={{
+                      width: SCREEN_WIDTH,
+                      height: SCREEN_HEIGHT / 2.3,
+                      backgroundColor: "rgba(0,0,0,0.25)",
+                      justifyContent: "flex-end",
+                      paddingHorizontal: SCREEN_WIDTH / 20,
+                    }}
+                  >
+                    <View style={{ marginBottom: SCREEN_HEIGHT / 70 }}>
+                      <View
+                        style={[
+                          newsStyle.category,
+                          {
+                            width:
+                              news?.category.length >= 10
+                                ? SCREEN_WIDTH / 1.5
+                                : SCREEN_WIDTH / 2.5,
+                          },
+                        ]}
+                      >
+                        <Text style={newsStyle.categoryText}>
+                          {news?.category}
+                        </Text>
+                      </View>
+                      <Text style={newsStyle.newsHeader}>{news?.title}</Text>
+                      <Text style={newsStyle.timePosted}>{news?.time}</Text>
+                    </View>
                   </View>
+                )}
+
+                <View style={newsStyle.newsContentContainer}>
+                  {/* {news.content && <Text style={newsStyle.newsContent}>{news.content}</Text>} */}
+                  <Logo
+                    style={{
+                      width: SCREEN_WIDTH / 1.5,
+                      height: SCREEN_HEIGHT / 30,
+                    }}
+                  />
                 </View>
-              </ImageBackground>
-              <View style={newsStyle.newsContentContainer}>
-                <Text style={newsStyle.newsContent}>{news}</Text>
-                <Logo
-                  style={{
-                    width: SCREEN_WIDTH / 1.5,
-                    height: SCREEN_HEIGHT / 30,
-                  }}
-                />
-              </View>
-            </>
-          </ScrollView>
-        )}
+              </>
+            </ScrollView>
+          )}
+        </View>
       </SafeAreaView>
     </>
   );
-};
-
-export default Page;
+}
