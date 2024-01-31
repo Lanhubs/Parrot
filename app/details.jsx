@@ -29,7 +29,6 @@ export default function Page() {
   const [news, setNews] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const fetchContent = async () => {
-    // const params = await AsyncStorage.getItem("Parrot-news-details");
     setLoading(true);
     const res = await fetch(`https://parrotnews.ng`, {
       method: 'POST',
@@ -64,7 +63,7 @@ export default function Page() {
                 >
                   <Ionicons name="arrow-back" size={25} color={"#fff"} />
                 </Pressable>
-                {params.image ? (
+                {params?.image ? (
                   <ImageBackground
                     source={{
                       uri: params.image,
@@ -107,7 +106,7 @@ export default function Page() {
                         <Text style={newsStyle.newsHeader}>
                           {params?.title}
                         </Text>
-                        <Text style={newsStyle.timePosted}>{news?.time}</Text>
+                        <Text style={newsStyle.timePosted}>{params?.time}</Text>
                       </View>
                     </View>
                   </ImageBackground>
@@ -127,24 +126,24 @@ export default function Page() {
                           newsStyle.category,
                           {
                             width:
-                              news?.category.length >= 10
+                              params.category.length >= 10
                                 ? SCREEN_WIDTH / 1.5
                                 : SCREEN_WIDTH / 2.5,
                           },
                         ]}
                       >
                         <Text style={newsStyle.categoryText}>
-                          {news?.category}
+                          {params.category}
                         </Text>
                       </View>
-                      <Text style={newsStyle.newsHeader}>{news?.title}</Text>
-                      <Text style={newsStyle.timePosted}>{news?.time}</Text>
+                      <Text style={newsStyle.newsHeader}>{params?.title}</Text>
+                      <Text style={newsStyle.timePosted}>{params?.time}</Text>
                     </View>
                   </View>
                 )}
 
                 <View style={newsStyle.newsContentContainer}>
-                  {/* {news.content && <Text style={newsStyle.newsContent}>{news.content}</Text>} */}
+                  {news && <Text style={newsStyle.newsContent}>{news}</Text>}
                   <Logo
                     style={{
                       width: SCREEN_WIDTH / 1.5,
