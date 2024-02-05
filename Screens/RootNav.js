@@ -7,7 +7,6 @@ import {
 } from "@react-navigation/native";
 import { loadAsync, useFonts } from "expo-font";
 import { useEffect, useState } from "react";
-// import NewsProviders from "../components/Providers/NewsProviders";
 import "expo-dev-client";
 import { Platform } from "react-native";
 
@@ -19,7 +18,6 @@ import SignUp from "./signup";
 import ForgotPassword from "./forgotPassword";
 import Details from "./details";
 export const unstable_settings = {
-  // Ensure that reloading on `/modal` keeps a back button present.
   initialRouteName: "(tabs)",
 };
 
@@ -38,19 +36,15 @@ export default function RootNav() {
     Montserrat,
   });
   useEffect(() => {
-    // if(Platform.OS=== "android" || Platform.OS === "ios"){
-    // }
     loadFonts();
   }, []);
   return (
     <NavigationContainer>
-
     <Stack.Navigator
       initialRouteName="tabs"
-
       screenOptions={{ headerShown: false }}
     >
-      <Stack.Screen name="tabs" component={TabLayout}  />
+      <Stack.Screen  name="tabs" component={TabLayout}  />
       <Stack.Screen name="login"  component={Login} />
 
       <Stack.Screen name="signup"   component={SignUp}/>
