@@ -1,0 +1,37 @@
+{
+  "expo": {
+    "name": "Parrot",
+    "slug": "Parrot",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/images/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.parrot"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "4dce9e40-bb71-4cc5-8d8c-5e834e2e8216"
+      }
+    }
+  },
+  "react-native-google-mobile-ads": {
+    "android_app_id": "ca-app-pub-2672084441882438~6692670311",   
+    "ios_app_id": "ca-app-pub-2672084441882438~6692670311"
+  }
+}
