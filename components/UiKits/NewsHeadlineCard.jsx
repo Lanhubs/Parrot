@@ -6,6 +6,7 @@ import {
   SCREEN_WIDTH,
 } from "../constants/Ui_contants";
 const NewsHeadlineCard = (props) => {
+  const { timePosted } = props;
   const truncator = (statement) => {
     var limit = 10;
     const words = statement.split(" ");
@@ -30,7 +31,10 @@ const NewsHeadlineCard = (props) => {
         <Image source={{ uri: props.image }} style={styles.image} />
         <View style={styles.headlineContainer}>
           <Text style={styles.headline}>{truncator(props.title)}</Text>
-          <Text style={styles.timePosted}>{props.timePosted}</Text>
+          <Text style={styles.timePosted}>
+            &#128346; {timePosted.day}th {timePosted.month}-{timePosted.year} {timePosted.time}:
+            {timePosted.min} {timePosted.hours}
+          </Text>
         </View>
       </View>
     </Pressable>
@@ -55,18 +59,19 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "500",
     fontFamily: "Montserrat",
-    marginBottom: SCREEN_HEIGHT / 120,
+    marginBottom: SCREEN_HEIGHT / 160,
+    marginTop: SCREEN_HEIGHT/80
+    
   },
   headline: {
     fontSize: 16,
     fontFamily: "Montserrat",
     fontWeight: "bold",
     color: "#000",
-    
-
   },
   headlineContainer: {
     marginLeft: SCREEN_WIDTH / 30,
     width: SCREEN_WIDTH / 1.5,
+    justifyContent: "space-between"
   },
 });

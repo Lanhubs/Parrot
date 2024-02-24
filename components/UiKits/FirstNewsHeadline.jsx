@@ -49,7 +49,7 @@ const FirstNewsHeadline = ({
           },
         ]}
       >
-        <View style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.3)" }}>
+        <View style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.3)",  }}>
           <Text
             style={{
               marginHorizontal: SCREEN_WIDTH / 30,
@@ -69,10 +69,11 @@ const FirstNewsHeadline = ({
               marginBottom: SCREEN_HEIGHT / 90,
               fontFamily: "Montserrat",
               color: "rgba(255,255,255,0.8)",
-              fontWeight: "500",
+              fontWeight: "600",
             }}
           >
-            {timePosted}
+            &#128346; {timePosted.day}th {timePosted.month}-{timePosted.year}{" "}
+            {timePosted.time}:{timePosted.min} {timePosted.hours}
           </Text>
         </View>
       </ImageBackground>

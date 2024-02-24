@@ -1,5 +1,10 @@
 import { StyleSheet } from "react-native";
-import { SCREEN_HEIGHT, SCREEN_WIDTH, MEDIUM_RAD, TAB_WIDTH } from "./Ui_contants";
+import {
+  SCREEN_HEIGHT,
+  SCREEN_WIDTH,
+  MEDIUM_RAD,
+  TAB_WIDTH,
+} from "./Ui_contants";
 
 const { create } = StyleSheet;
 export const authStyles = create({
@@ -87,7 +92,7 @@ export const profileStyles = create({
     marginHorizontal: "auto",
     marginTop: SCREEN_HEIGHT / 20,
     alignItems: "center",
-    justifyContent: 'center',
+    justifyContent: "center",
     borderWidth: 3,
     borderColor: "darkblue",
   },
@@ -166,7 +171,7 @@ export const settingsStyles = create({
     marginVertical: SCREEN_HEIGHT / 90,
     fontFamily: "Montserrat",
     fontSize: 18,
-    fontWeight: "700"
+    fontWeight: "700",
   },
 });
 
@@ -185,7 +190,7 @@ export const newsStyle = create({
   image: {
     height: SCREEN_HEIGHT / 2.3,
     paddingHorizontal: SCREEN_WIDTH / 20,
-    width: SCREEN_WIDTH/1,
+    width: SCREEN_WIDTH / 1,
   },
   header: {
     flexDirection: "row",
@@ -197,9 +202,11 @@ export const newsStyle = create({
     fontSize: 18,
     fontWeight: "600",
     fontFamily: "Montserrat",
-    marginBottom: SCREEN_HEIGHT / 90,
+    marginBottom: SCREEN_HEIGHT / 110,
+    marginTop: SCREEN_HEIGHT / 130,
+
     color: "#fff",
-    textAlign:"justify",
+    textAlign: "justify",
   },
   newsContent: {
     fontSize: 14,
@@ -207,10 +214,11 @@ export const newsStyle = create({
     fontFamily: "Montserrat",
     marginTop: SCREEN_WIDTH / 15,
     lineHeight: 25,
-    color: "#000"
+    color: "#000",
   },
   timePosted: {
     fontSize: 16,
+    marginBottom: SCREEN_HEIGHT / 30,
     fontWeight: "600",
     fontFamily: "Montserrat",
     color: "rgba(255, 255, 255, 0.8)",
@@ -221,30 +229,29 @@ export const newsStyle = create({
     position: "absolute",
     paddingVertical: SCREEN_HEIGHT / 100,
     borderTopEndRadius: 15,
-    borderTopLeftRadius:15,
+    borderTopLeftRadius: 15,
     zIndex: 100,
     backgroundColor: "#fff",
-    top: SCREEN_HEIGHT/2.5,
+    top: SCREEN_HEIGHT / 2.5,
     width: SCREEN_WIDTH,
-    height: SCREEN_HEIGHT/1,
-    fontFamily: "Montserrat"
+    height: SCREEN_HEIGHT / 1,
+    fontFamily: "Montserrat",
   },
-  category:{
-    height: SCREEN_HEIGHT/25,
+  category: {
+    height: SCREEN_HEIGHT / 25,
     justifyContent: "center",
-    paddingLeft: SCREEN_WIDTH/30,
-    paddingRight: SCREEN_WIDTH/20,
+    paddingLeft: SCREEN_WIDTH / 30,
+    paddingRight: SCREEN_WIDTH / 20,
 
     backgroundColor: "rgba(255, 255, 255, 0.4)",
-    borderRadius: SCREEN_WIDTH/20,
-    fontWeight: "600"
+    borderRadius: SCREEN_WIDTH / 20,
+    fontWeight: "600",
   },
-  categoryText:{
+  categoryText: {
     color: "#f0f0f0",
     fontSize: 16,
-    textTransform: 'capitalize'
-  }
-  
+    textTransform: "capitalize",
+  },
 });
 
 export const FlashMessageStyle = {

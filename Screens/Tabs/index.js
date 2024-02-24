@@ -33,19 +33,26 @@ import {
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import Logo from "../../components/UiKits/Logo";
 import { useNavigation } from "@react-navigation/native";
-import LoaderModal from "../../components/UiKits/LoaderModal";
+// import LoaderModal from "../../components/UiKits/LoaderModal";
 import Drawer from "../Drawer";
 export default function Home() {
-
   const time = (time) => {
-    date = new Date(time)
-    return { "year": date.getFullYear(), "month": date.toLocaleString('en-US', { month: 'long' }), "day": date.getDate(), "time": date.getHours(), "sec": date.getMinutes(), "hous": date.getHours >= 12 ? "PM" : "AM" }
-
-}
-
-
-
-  const   adUnitAd= __DEV__ ? TestIds.BANNER : "ca-app-pub-2672084441882438/7622608608"
+    date = new Date(time);
+    return {
+      year: date.getFullYear(),
+      month: date.toLocaleString("en-US", { month: "long" }),
+      day: date.getDate(),
+      time: date.getHours(),
+      min: date.getMinutes(),
+      hours: date.getHours >= 12 ? "PM" : "AM",
+    };
+  };
+  const filtered = (data) => {
+    return data.filter((obj) => obj.image !== null);
+  };
+  const adUnitAd = __DEV__
+    ? TestIds.BANNER
+    : "ca-app-pub-2672084441882438/7622608608";
 
   var navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
@@ -53,10 +60,10 @@ export default function Home() {
   const [index, setIndex] = React.useState(0);
   const [data, setData] = useState([]);
   const [readDetails, setReadDetails] = React.useState(false);
- const interstitial = interstitial.createForAdRequest(ADMOB_CONFIG.insterStitiaAd, {
-    requestNonPersonalizedAdsOnly: true,
-    keywords: ["football", "fashion", "clothing"]
-  }) 
+  //  const interstitial = interstitial.createForAdRequest(ADMOB_CONFIG.insterStitiaAd, {
+  //     requestNonPersonalizedAdsOnly: true,
+  //     keywords: ["football", "fashion", "clothing"]
+  //   })
   const onScroll = (e) => {
     const verticalOffset = e.nativeEvent.contentOffset.y;
     if (verticalOffset === 0) {
@@ -77,8 +84,9 @@ export default function Home() {
     try {
       setIsLoading(true);
       const res = await fetch(`https://parrotnews.ng/${news}`);
-      const data = await res.json();
+      var data = await res.json();
       if (res.ok) {
+        data = filtered(data);
         setFirstHeadline(data[0]);
         setData(data.filter((elem, idx) => idx > 1 && idx <= 20));
         setIsLoading(false);
@@ -112,10 +120,10 @@ export default function Home() {
     newsfetch();
   }, []);
   // interstitial ad
-  useEffect(()=>{
-    interstitial.load()
-    setTimeout(()=>{interstitial.show()}, 3000)
-  }, [])
+  useEffect(() => {
+    // interstitial.load()
+    // setTimeout(()=>{interstitial.show()}, 30000)
+  }, []);
   return (
     <SafeAreaView style={homeStyles.container}>
       {/* header */}
@@ -199,7 +207,6 @@ export default function Home() {
   );
 }
 const Header = () => {
-  const navigation = useNavigation();
   return (
     <View
       style={{

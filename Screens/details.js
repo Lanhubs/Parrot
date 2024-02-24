@@ -7,9 +7,10 @@ import {
   Pressable,
   Alert,
   ActivityIndicator,
-  FlatList
+  FlatList,
+  VirtualizedList,
 } from "react-native";
-import React from "react";
+import React, { useRef } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { newsStyle } from "../components/constants/style";
 import NewsLoader from "../components/UiKits/NewsLoader";
@@ -20,13 +21,40 @@ import {
 } from "../components/constants/Ui_contants";
 import Logo from "../components/UiKits/Logo";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import HrCenter from "../components/UiKits/HrCenter";
 
 export default function Details({ route, navigation }) {
   const [news, usenews] = React.useState(null);
-  const [loading, setLoading] = React.useState(true);
-  const [categoryN, setCategory] = React.useState(null)
-  const { read, image, title, time, category } = route.params;
+  const [newsContent, usenewsContent] = React.useState({
+    read: "", image: null, title: "", time: "", category: "", content: ""
+  });
 
+  const [loading, setLoading] = React.useState(true);
+  const [categoryN, setCategory] = React.useState(null);
+  const { read, image, title, time, category } = route.params;
+  const scrollRef = useRef()
+  const timePosted = (time) => {
+    date = new Date(time);
+    const timeData = {
+      year: date.getFullYear(),
+      month: date.toLocaleString("en-US", { month: "long" }),
+      day: date.getDate(),
+      time: date.getHours(),
+      min: date.getMinutes(),
+      hours: date.getHours >= 12 ? "PM" : "AM",
+    };
+    return `${timeData.day}th ${timeData.month}-${timeData.year} ${timeData.time}:${timeData.min} ${timeData.hours}`;
+  };
+const changeNewsContent=(data)=>{
+  console.log(data)
+  scrollRef.current?.scrollTo({
+    y: 0,
+    animated: true,
+  });
+  usenewsContent({...data, time: data.date})
+
+
+}
   const fetchnews = async () => {
     try {
       const response = await fetch("https://parrotnews.ng/", {
@@ -41,6 +69,7 @@ export default function Details({ route, navigation }) {
       const data = await response.json();
       if (response.ok) {
         usenews(data);
+        usenewsContent({...route.params, content: data})
         setLoading(false);
       } else {
         setLoading(false);
@@ -55,23 +84,23 @@ export default function Details({ route, navigation }) {
 
   const categoryNews = () => {
     fetch(`https://parrotnews.ng/category?url=news`)
-      .then(response => {
+      .then((response) => {
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error("Network response was not ok");
         }
         return response.json();
       })
-      .then(data => {
-        setCategory(data)
+      .then((data) => {
+        setCategory(data);
       })
-      .catch(error => {
+      .catch((error) => {
         //handle the request if  its failed to load
         //anything as your choice
       });
   };
   React.useEffect(() => {
     categoryNews();
-  })
+  });
   return (
     <>
       <SafeAreaView style={{ flex: 1, backgroundColor: "#FAFAFA" }}>
@@ -84,10 +113,12 @@ export default function Details({ route, navigation }) {
         {loading ? (
           <NewsLoader />
         ) : (
-          <ScrollView>
+          <ScrollView 
+          ref={scrollRef}
+          >
             <ImageBackground
               source={{
-                uri: image
+                uri: newsContent.image,
               }}
               // source={dummy}
               style={[
@@ -120,10 +151,16 @@ export default function Details({ route, navigation }) {
                       },
                     ]}
                   >
-                    <Text style={newsStyle.categoryText}>{category}</Text>
+                    <Text style={newsStyle.categoryText}>
+                      {newsContent.category.includes("economy" || "capital" || "business")
+                        ? "Economy"
+                        :newsContent.category}
+                    </Text>
                   </View>
-                  <Text style={newsStyle.newsHeader}>{title}</Text>
-                  <Text style={newsStyle.timePosted}>{time}</Text>
+                  <Text style={newsStyle.newsHeader}>{newsContent.title}</Text>
+                  <Text style={newsStyle.timePosted}>
+                    &#128346;{timePosted(newsContent.time)}
+                  </Text>
                 </View>
               </View>
             </ImageBackground>
@@ -151,44 +188,62 @@ export default function Details({ route, navigation }) {
                   marginBottom: SCREEN_HEIGHT / 100,
                 }}
               >
-                {news}
+                {newsContent.content}
               </Text>
-              <View>
-              <FlatList
+              <View
+                style={{ /* height: SCREEN_HEIGHT / 10, */}}
+              >
+                <Text
+                  style={{
+                    color: "darkgray",
+                    fontSize: 17,
+                    fontWeight: "600",
+                    fontFamily: "Montserrat",
+                  }}
+                >
+                  You might like?
+                </Text>
 
-              ListHeaderComponent={<View><Text style={{color:"darkgray", fontSize:"17", fontWeight:"bold"}}>You might like?</Text></View>}
-  ListEmptyComponent={() => (
-    <View style={{
-      borderWidth:1,
-      borderColor:"#000",
-      shadowRadius:'3',
-      shadowColor:"#111",
-      shadowOpacity:"0.5",
-    width:200,
-    height:100,
-    }}>
-      <Text>Failed to get categories</Text>
-    </View>
-  )}
-  data={categoryN}
-  renderItem={({ item }) => (
-    <View>
-      {item.image !=null?
-      <ImageBackground 
-       source={{ uri:item.image}}>
-      <Text>{item.title}</Text>
-    </ImageBackground>
-:null}
-    </View>
-  )}
-/>
-
+                {!categoryN ? (
+                  <View
+                    style={{
+                      borderWidth: 1,
+                      borderColor: "#000",
+                      shadowRadius: 3,
+                      shadowColor: "#111",
+                      shadowOpacity: "0.5",
+                      marginHorizontal: SCREEN_WIDTH / 20,
+                      // height: 100,
+                    }}
+                  >
+                    <Text>Failed to get categories</Text>
+                  </View>
+                ) : (
+                  categoryN.map((item, idx) => (
+                    <Pressable
+                      key={idx}
+                      onPress={()=>{
+                        changeNewsContent(item)
+                      }}
+                      style={{ marginVertical: SCREEN_HEIGHT / 150 }}
+                    >
+                      {item.image != null ? (
+                        <ImageBackground source={{ uri: item.image }}>
+                          <Text>{item.title}</Text>
+                        </ImageBackground>
+                      ) : (
+                        <Text>{item.title}</Text>
+                      )}
+                    </Pressable>
+                  ))
+                )}
               </View>
-              <Logo />
+              <HrCenter>
+                <Logo />
+              </HrCenter>
             </View>
           </ScrollView>
         )}
-       
       </SafeAreaView>
     </>
   );

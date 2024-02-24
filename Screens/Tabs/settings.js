@@ -1,16 +1,8 @@
-<<<<<<< HEAD
-import { Image, StyleSheet, View, Text, Linking, TouchableOpacity } from "react-native";
-=======
-import {
-  Image,
-  StyleSheet,
-  View,
-  Text,
-  Linking,
-  Pressable,
+
+import { Image, StyleSheet, View, Text, Linking, TouchableOpacity
+,  Pressable,
   ScrollView,
 } from "react-native";
->>>>>>> 2b9d31fb7fbe917ce12516cd52857fd6c0fbcb1a
 import facebookIcon from "../../assets/images/facebook.png";
 import privacyIcon from "../../assets/images/privacy.png";
 import supportIcon from "../../assets/images/support.png";
@@ -129,24 +121,6 @@ export default function Settings({ route, navigation }) {
             );
           }}
         />
-        {/* <SettingBtn
-        iconLeft={
-          <Image
-            source={twitterIcon}
-            tintColor={"darkblue"}
-            style={[settingsStyles.buttonIcon]}
-          />
-        }
-        label="Follow us on Twitter"
-        iconRight={
-          <FontAwesome
-            name="angle-right"
-            size={20}
-            style={{ marginLeft: "auto" }}
-          />
-        }
-      /> */}
-<<<<<<< HEAD
       <SettingBtn
         label="Timeline"
         iconLeft={
@@ -203,8 +177,7 @@ export default function Settings({ route, navigation }) {
         <Logo />
       </HrCenter>
     </SafeAreaView>
-=======
-        <SettingBtn
+      <SettingBtn
           label="Timeline"
           iconLeft={
             <Ionicons name="alarm-outline" size={25} color={"darkblue"} />
@@ -275,9 +248,7 @@ export default function Settings({ route, navigation }) {
         <HrCenter>
           <Logo />
         </HrCenter>
-      </SafeAreaView>
     </ScrollView>
->>>>>>> 2b9d31fb7fbe917ce12516cd52857fd6c0fbcb1a
   );
 }
 
